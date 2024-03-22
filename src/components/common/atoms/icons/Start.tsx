@@ -11,10 +11,10 @@ function Start({ size = 32 }: IconProps) {
       xmlns='http://www.w3.org/2000/svg'
       xmlnsXlink='http://www.w3.org/1999/xlink'
     >
-      <rect width='32' height='32' fill='url(#pattern0)' />
+      <rect width='32' height='32' fill='url(#start)' />
       <defs>
         <pattern
-          id='pattern0'
+          id='start'
           patternContentUnits='objectBoundingBox'
           width='1'
           height='1'
