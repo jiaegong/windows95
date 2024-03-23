@@ -5,9 +5,14 @@ import Folder from '@/components/common/atoms/icons/Folder';
 import InternetExplorer from '@/components/common/atoms/icons/InternetExplorer';
 import Notepad from '@/components/common/atoms/icons/Notepad';
 import Paint from '@/components/common/atoms/icons/Paint';
-import emotionStyled from '@emotion/styled';
+import NotepadModal from '@/components/common/organisms/NotepadModal';
+import PaintModal from '@/components/common/organisms/PaintModal';
+import useModalStore from '@/store/useModalStore';
+import styled from '@emotion/styled';
 
 export default function Home() {
+  const { setModal } = useModalStore();
+
   return (
     <main>
       <ProgramSection>
@@ -17,15 +22,29 @@ export default function Home() {
           label='Internet'
           onClick={() => {}}
         />
-        <IconWithLabel icon={<Paint />} label='Paint' onClick={() => {}} />
-        <IconWithLabel icon={<Notepad />} label='Notepad' onClick={() => {}} />
+        <IconWithLabel
+          icon={<Paint />}
+          label='Paint'
+          onClick={() => {
+            setModal('paint', { open: true });
+          }}
+        />
+        <IconWithLabel
+          icon={<Notepad />}
+          label='Notepad'
+          onClick={() => {
+            setModal('notepad', { open: true });
+          }}
+        />
+        <PaintModal />
+        <NotepadModal />
       </ProgramSection>
     </main>
   );
 }
 
-const ProgramSection = emotionStyled.div`
-display: flex;
-flex-direction: column;
-gap: 24px;
+const ProgramSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 `;

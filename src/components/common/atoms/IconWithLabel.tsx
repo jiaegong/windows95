@@ -1,7 +1,7 @@
 'use client';
 
 import { theme } from '@/styles/theme';
-import emotionStyled from '@emotion/styled';
+import styled from '@emotion/styled';
 import React, { useEffect, useState } from 'react';
 import { w95fa } from '../../../../public/font/font';
 
@@ -13,12 +13,12 @@ type IconWithLabelProps = {
 
 function IconWithLabel({ icon, label, onClick }: IconWithLabelProps) {
   const [clickCount, setClickCount] = useState(0);
-  const [click, setClick] = useState(false);
+  const [clicked, setClicked] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
       if (clickCount === 1) {
-        setClick(!click);
+        setClicked(!clicked);
         setClickCount(0);
       }
     }, 300);
@@ -29,7 +29,7 @@ function IconWithLabel({ icon, label, onClick }: IconWithLabelProps) {
     }
 
     return () => clearTimeout(timer);
-  }, [clickCount, click]);
+  }, [clickCount, clicked]);
 
   const handleClick = () => {
     setClickCount((prev) => prev + 1);
@@ -38,26 +38,26 @@ function IconWithLabel({ icon, label, onClick }: IconWithLabelProps) {
   return (
     <Wrapper className={w95fa.className} onClick={handleClick}>
       {icon}
-      <LabelWrapper click={click}>{label}</LabelWrapper>
+      <LabelWrapper clicked={clicked}>{label}</LabelWrapper>
     </Wrapper>
   );
 }
 
 export default IconWithLabel;
 
-const Wrapper = emotionStyled.div`
-width: 60px;
-height: 50px;
-display: flex;
-flex-direction: column;
-justify-content: center;
-align-items: center;
-gap: 6px;
-cursor: pointer;
+const Wrapper = styled.div`
+  width: 60px;
+  height: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
 `;
 
-const LabelWrapper = emotionStyled.div<{ click: boolean }>`
-color: ${theme.colors.white};
-background: ${({ click }) => click && `${theme.colors.secondary}`};
-outline: ${({ click }) => click && `1px dotted ${theme.colors.black}`};
+const LabelWrapper = styled.div<{ clicked: boolean }>`
+  color: ${theme.colors.white};
+  background: ${({ clicked }) => clicked && `${theme.colors.secondary}`};
+  outline: ${({ clicked }) => clicked && `1px dotted ${theme.colors.black}`};
 `;

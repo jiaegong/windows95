@@ -17,6 +17,7 @@ export default function RootLayout({
     <html lang='en'>
       <body className={w95fa.className}>
         <GlobalLayout>{children}</GlobalLayout>
+        <div id='portal-root' />
       </body>
     </html>
   );

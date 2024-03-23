@@ -1,6 +1,6 @@
 import React from 'react';
 
-function Checkbox() {
+function Checkbox({ checked }: { checked: boolean }) {
   return (
     <svg
       width='14'
@@ -13,7 +13,7 @@ function Checkbox() {
         <rect width='13' height='13' transform='translate(0.5)' fill='white' />
         <path
           d='M10.5 3H9.5V4H8.5V5H7.5V6H6.5V7H5.5V6H4.5V5H3.5V8H4.5V9H5.5V10H6.5V9H7.5V8H8.5V7H9.5V6H10.5V3Z'
-          fill='black'
+          fill={checked ? 'black' : 'none'}
         />
       </g>
       <defs>
