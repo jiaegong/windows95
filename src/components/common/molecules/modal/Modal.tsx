@@ -33,12 +33,8 @@ function Modal({
     y: 160,
   });
   const [initialPosition, setInitialPosition] = useState<Position>({
-    x: 480,
-    y: 160,
-  });
-  const [offset, setOffset] = useState<Position>({
-    x: 480,
-    y: 160,
+    x: 0,
+    y: 0,
   });
   const [isDraggable, setIsDraggable] = useState(false);
   const { setModal, getModalState } = useModalStore();
@@ -53,8 +49,8 @@ function Modal({
 
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>) => {
     setInitialPosition({
-      x: e.clientX - offset.x,
-      y: e.clientY - offset.y,
+      x: e.clientX - position.x,
+      y: e.clientY - position.y,
     });
   };
 
@@ -64,7 +60,6 @@ function Modal({
       const newX = e.clientX - initialPosition.x;
       const newY = e.clientY - initialPosition.y;
       setPosition({ x: newX, y: newY });
-      setOffset({ x: newX, y: newY });
     }
   };
 
