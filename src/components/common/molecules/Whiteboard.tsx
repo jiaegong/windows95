@@ -11,12 +11,26 @@ type WhiteboardProps = {
   children: React.ReactNode;
   icon: React.ReactNode;
   onClose: () => void;
+  onDragStart: () => void;
+  onDragEnd: () => void;
 };
 
-function Whiteboard({ title, children, icon, onClose }: WhiteboardProps) {
+function Whiteboard({
+  title,
+  children,
+  icon,
+  onClose,
+  onDragStart,
+  onDragEnd,
+}: WhiteboardProps) {
   return (
     <WhiteboardLayout>
-      <Titlebar icon={icon} onClose={onClose}>
+      <Titlebar
+        icon={icon}
+        onClose={onClose}
+        onMouseOver={onDragStart}
+        onMouseOut={onDragEnd}
+      >
         {title}
       </Titlebar>
       <Optionbar />

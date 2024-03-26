@@ -1,7 +1,7 @@
 'use client';
 
 import styled from '@emotion/styled';
-import React from 'react';
+import React, { ComponentProps } from 'react';
 import TextWithIcon from '../atoms/TextWithIcon';
 import ControlButton from '../atoms/buttons/ControlButton';
 import { theme } from '@/styles/theme';
@@ -10,13 +10,14 @@ function Titlebar({
   children,
   icon,
   onClose,
+  ...props
 }: {
   children: string;
   icon: React.ReactNode;
   onClose: () => void;
-}) {
+} & ComponentProps<'div'>) {
   return (
-    <TitlebarLayout>
+    <TitlebarLayout {...props}>
       <TextWithIcon icon={icon} color={theme.colors.white}>
         {children}
       </TextWithIcon>
