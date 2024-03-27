@@ -7,17 +7,18 @@ import useModalStore from '@/store/useModalStore';
 import Whiteboard from '../Whiteboard';
 import Folder from '../../atoms/icons/Folder';
 
+type Position = {
+  x: number;
+  y: number;
+};
+
 type ModalProps = {
   id: string;
   children: React.ReactNode;
   closeCallback?: () => void;
   title?: string;
   icon?: React.ReactNode;
-};
-
-type Position = {
-  x: number;
-  y: number;
+  offset?: Position;
 };
 
 function Modal({
@@ -26,12 +27,13 @@ function Modal({
   closeCallback,
   title = 'Folder',
   icon = <Folder />,
-}: ModalProps) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [position, setPosition] = useState<Position>({
+  offset = {
     x: 480,
     y: 160,
-  });
+  },
+}: ModalProps) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [position, setPosition] = useState<Position>(offset);
   const [initialPosition, setInitialPosition] = useState<Position>({
     x: 0,
     y: 0,

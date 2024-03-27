@@ -11,7 +11,9 @@ import useModalStore from '@/store/useModalStore';
 import styled from '@emotion/styled';
 
 export default function Home() {
-  const { setModal } = useModalStore();
+  const { setModal, getAllModals } = useModalStore();
+
+  console.log(getAllModals());
 
   return (
     <main>
