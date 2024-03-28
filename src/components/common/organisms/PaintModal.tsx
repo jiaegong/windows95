@@ -7,12 +7,16 @@ import Palette from '../molecules/Palette';
 function PaintModal() {
   const [color, setColor] = useState<string>('#000000');
 
+  const handleColor = (hex: string) => {
+    setColor(hex);
+  };
+
   return (
     <Modal
       id='paint'
       title='Paint'
       icon={<Paint size={16} />}
-      util={<Palette handleColor={setColor} />}
+      util={<Palette handleColor={handleColor} />}
       offset={{ x: 480, y: 80 }}
     >
       <Canvas color={color} />

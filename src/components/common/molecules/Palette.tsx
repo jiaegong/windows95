@@ -29,11 +29,7 @@ const colors = [
   { name: 'orange red', hex: '#FF4500' },
 ];
 
-function Palette({
-  handleColor,
-}: {
-  handleColor: React.Dispatch<React.SetStateAction<string>>;
-}) {
+function Palette({ handleColor }: { handleColor: (hex: string) => void }) {
   return (
     <PaletteLayout>
       <ColorContainer>
