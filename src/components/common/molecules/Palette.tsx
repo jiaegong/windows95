@@ -52,9 +52,6 @@ function Palette({
 export default Palette;
 
 const PaletteLayout = styled.div`
-  position: absolute;
-  bottom: 0;
-  left: 0;
   width: 100%;
   background: ${theme.colors.gray01};
   padding: 4px;

@@ -10,6 +10,7 @@ type WhiteboardProps = {
   title: string;
   children: React.ReactNode;
   icon: React.ReactNode;
+  util?: React.ReactNode;
   onClose: () => void;
   onDragStart: () => void;
   onDragEnd: () => void;
@@ -19,6 +20,7 @@ function Whiteboard({
   title,
   children,
   icon,
+  util,
   onClose,
   onDragStart,
   onDragEnd,
@@ -35,6 +37,7 @@ function Whiteboard({
       </Titlebar>
       <Optionbar />
       <ContentWrapper>{children}</ContentWrapper>
+      {util}
     </WhiteboardLayout>
   );
 }
@@ -53,7 +56,6 @@ const WhiteboardLayout = styled.div`
 `;
 
 const ContentWrapper = styled.div`
-  position: relative;
   width: 100%;
   height: 100%;
   padding: 8px;

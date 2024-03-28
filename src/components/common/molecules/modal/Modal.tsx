@@ -18,6 +18,7 @@ type ModalProps = {
   closeCallback?: () => void;
   title?: string;
   icon?: React.ReactNode;
+  util?: React.ReactNode;
   offset?: Position;
 };
 
@@ -27,6 +28,7 @@ function Modal({
   closeCallback,
   title = 'Folder',
   icon = <Folder />,
+  util,
   offset = {
     x: 480,
     y: 160,
@@ -87,6 +89,7 @@ function Modal({
           <Whiteboard
             title={title}
             icon={icon}
+            util={util}
             onClose={onClose}
             onDragStart={() => setIsDraggable(true)}
             onDragEnd={() => setIsDraggable(false)}

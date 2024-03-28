@@ -12,10 +12,10 @@ function PaintModal() {
       id='paint'
       title='Paint'
       icon={<Paint size={16} />}
-      offset={{ x: 480, y: 120 }}
+      util={<Palette handleColor={setColor} />}
+      offset={{ x: 480, y: 80 }}
     >
       <Canvas color={color} />
-      <Palette handleColor={setColor} />
     </Modal>
   );
 }
