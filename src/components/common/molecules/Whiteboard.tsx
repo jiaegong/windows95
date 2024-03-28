@@ -53,6 +53,7 @@ const WhiteboardLayout = styled.div`
 `;
 
 const ContentWrapper = styled.div`
+  position: relative;
   width: 100%;
   height: 100%;
   padding: 8px;

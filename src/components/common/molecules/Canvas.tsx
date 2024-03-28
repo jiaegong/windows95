@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-function Canvas() {
-  // TODO: 그림판 팔레트 추가하기
+function Canvas({ color }: { color: string }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const contextRef = useRef<CanvasRenderingContext2D>();
   const [isDrawing, setIsDrawing] = useState(false);
@@ -13,12 +12,19 @@ function Canvas() {
 
       if (context) {
         contextRef.current = context;
-        context.strokeStyle = 'black'; // 선 색상
-        context.lineWidth = 2; // 선 두께
-        context.lineCap = 'round'; // 선 끝 모양
+        context.strokeStyle = 'black';
+        context.lineWidth = 2;
+        context.lineCap = 'round';
       }
     }
   }, []);
+
+  useEffect(() => {
+    const ctx = contextRef.current;
+    if (ctx) {
+      ctx.strokeStyle = color;
+    }
+  }, [color]);
 
   const startDrawing = (e: React.MouseEvent) => {
     const { offsetX, offsetY } = e.nativeEvent;
