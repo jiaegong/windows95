@@ -1,10 +1,12 @@
 'use client';
 
 import IconWithLabel from '@/components/common/atoms/IconWithLabel';
+import Bomb from '@/components/common/atoms/icons/Bomb';
 import Folder from '@/components/common/atoms/icons/Folder';
 import InternetExplorer from '@/components/common/atoms/icons/InternetExplorer';
 import Notepad from '@/components/common/atoms/icons/Notepad';
 import Paint from '@/components/common/atoms/icons/Paint';
+import Minesweeper from '@/components/common/organisms/Minesweeper';
 import NotepadModal from '@/components/common/organisms/NotepadModal';
 import PaintModal from '@/components/common/organisms/PaintModal';
 import useModalStore from '@/store/useModalStore';
@@ -38,14 +40,23 @@ export default function Home() {
             setModal('notepad', { open: true });
           }}
         />
+        <IconWithLabel
+          icon={<Bomb />}
+          label='Mine Sweeper'
+          onClick={() => {
+            setModal('minesweeper', { open: true });
+          }}
+        />
         <PaintModal />
         <NotepadModal />
+        <Minesweeper />
       </ProgramSection>
     </main>
   );
 }
 
 const ProgramSection = styled.div`
+  width: fit-content;
   display: flex;
   flex-direction: column;
   gap: 24px;

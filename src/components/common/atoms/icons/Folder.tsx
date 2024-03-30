@@ -1,7 +1,7 @@
 import { IconProps } from '@/types/common';
 import React from 'react';
 
-function Folder({ size }: IconProps) {
+function Folder({ size = 32 }: IconProps) {
   return (
     <svg
       width={size}

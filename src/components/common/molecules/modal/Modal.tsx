@@ -6,6 +6,8 @@ import styled from '@emotion/styled';
 import useModalStore from '@/store/useModalStore';
 import Whiteboard from '../Whiteboard';
 import Folder from '../../atoms/icons/Folder';
+import { theme } from '@/styles/theme';
+import Titlebar from '../Titlebar';
 
 type Position = {
   x: number;
@@ -20,6 +22,7 @@ type ModalProps = {
   icon?: React.ReactNode;
   util?: React.ReactNode;
   offset?: Position;
+  whiteboard?: boolean;
 };
 
 function Modal({
@@ -27,12 +30,13 @@ function Modal({
   children,
   closeCallback,
   title = 'Folder',
-  icon = <Folder />,
+  icon = <Folder size={16} />,
   util,
   offset = {
     x: 480,
     y: 160,
   },
+  whiteboard = true,
 }: ModalProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [position, setPosition] = useState<Position>(offset);
@@ -87,6 +91,7 @@ function Modal({
           }}
         >
           <Whiteboard
+            whiteboard={whiteboard}
             title={title}
             icon={icon}
             util={util}
@@ -106,4 +111,9 @@ export default Modal;
 
 const ModalLayout = styled.div`
   position: fixed;
+  width: fit-content;
+  padding: 4px;
+  background: ${theme.colors.gray01};
+  box-shadow: 2px 2px 0px 0px #dfdfdf inset, -2px -2px 0px 0px #7f7f7f inset,
+    1px 1px 0px 0px #ffffff inset, -1px -1px 0px 0px #000000 inset;
 `;

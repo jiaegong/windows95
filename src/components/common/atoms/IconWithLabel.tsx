@@ -46,8 +46,7 @@ function IconWithLabel({ icon, label, onClick }: IconWithLabelProps) {
 export default IconWithLabel;
 
 const Wrapper = styled.div`
-  width: 60px;
-  height: 50px;
+  width: 80px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -57,7 +56,9 @@ const Wrapper = styled.div`
 `;
 
 const LabelWrapper = styled.div<{ clicked: boolean }>`
+  width: fit-content;
   color: ${theme.colors.white};
   background: ${({ clicked }) => clicked && `${theme.colors.secondary}`};
   outline: ${({ clicked }) => clicked && `1px dotted ${theme.colors.black}`};
+  text-align: center;
 `;

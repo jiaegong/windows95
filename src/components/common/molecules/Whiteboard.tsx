@@ -7,6 +7,7 @@ import Titlebar from './Titlebar';
 import Optionbar from './Optionbar';
 
 type WhiteboardProps = {
+  whiteboard?: boolean;
   title: string;
   children: React.ReactNode;
   icon: React.ReactNode;
@@ -17,6 +18,7 @@ type WhiteboardProps = {
 };
 
 function Whiteboard({
+  whiteboard,
   title,
   children,
   icon,
@@ -35,8 +37,14 @@ function Whiteboard({
       >
         {title}
       </Titlebar>
-      <Optionbar />
-      <ContentWrapper>{children}</ContentWrapper>
+      {whiteboard ? (
+        <>
+          <Optionbar />
+          <ContentWrapper>{children}</ContentWrapper>
+        </>
+      ) : (
+        <>{children}</>
+      )}
       {util}
     </WhiteboardLayout>
   );
@@ -45,14 +53,9 @@ function Whiteboard({
 export default Whiteboard;
 
 const WhiteboardLayout = styled.div`
-  width: fit-content;
   display: flex;
   flex-direction: column;
   gap: 4px;
-  padding: 4px;
-  background: ${theme.colors.gray01};
-  box-shadow: 2px 2px 0px 0px #dfdfdf inset, -2px -2px 0px 0px #7f7f7f inset,
-    1px 1px 0px 0px #ffffff inset, -1px -1px 0px 0px #000000 inset;
 `;
 
 const ContentWrapper = styled.div`
