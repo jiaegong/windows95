@@ -1,9 +1,14 @@
 import { IconProps } from '@/types/common';
 import React from 'react';
 
-function Bomb({ size = 26 }: IconProps) {
+function Bomb({
+  size = 26,
+  parentSize = 32,
+}: IconProps & { parentSize?: number }) {
   return (
     <svg
+      x={(parentSize - size) / 2}
+      y={(parentSize - size) / 2}
       width={size}
       height={size}
       viewBox='0 0 26 26'

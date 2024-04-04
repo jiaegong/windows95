@@ -6,7 +6,7 @@ import styled from '@emotion/styled';
 import { theme } from '@/styles/theme';
 
 const BOARD_SIZE = 10;
-const NUMBER_OF_MINES = 3;
+const NUMBER_OF_MINES = 10;
 
 function Minesweeper() {
   const createBoard = (boardSize: number, numberOfMines: number) => {
@@ -53,7 +53,6 @@ function Minesweeper() {
   };
 
   const board = createBoard(BOARD_SIZE, NUMBER_OF_MINES);
-  console.log(board);
 
   return (
     <Modal
@@ -64,7 +63,9 @@ function Minesweeper() {
     >
       <BoardContainer size={BOARD_SIZE}>
         {board.map((row) => {
-          return row.map((cell, idx) => <Tile key={idx} data={cell} />);
+          return row.map((cell, idx) => (
+            <Tile key={idx} data={cell} board={board} />
+          ));
         })}
       </BoardContainer>
     </Modal>
