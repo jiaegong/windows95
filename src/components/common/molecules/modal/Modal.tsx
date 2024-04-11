@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { createContext, useEffect, useRef, useState } from 'react';
 import Portal from './Portal';
 import styled from '@emotion/styled';
 import useModalStore from '@/store/useModalStore';
@@ -23,7 +23,10 @@ type ModalProps = {
   util?: React.ReactNode;
   offset?: Position;
   whiteboard?: boolean;
+  saveFile?: () => void;
 };
+
+export const ModalContext = createContext(() => {});
 
 function Modal({
   id,
@@ -37,6 +40,7 @@ function Modal({
     y: 160,
   },
   whiteboard = true,
+  saveFile = () => {},
 }: ModalProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [position, setPosition] = useState<Position>(offset);
@@ -78,30 +82,32 @@ function Modal({
   return (
     <Portal>
       {isOpen && (
-        <ModalLayout
-          ref={ref}
-          draggable={isDraggable}
-          onDragStart={handleDragStart}
-          onDragEnd={handleDragEnd}
-          onDrag={handleDrag}
-          onClick={(e) => e.stopPropagation()}
-          style={{
-            top: `${position.y}px`,
-            left: `${position.x}px`,
-          }}
-        >
-          <Whiteboard
-            whiteboard={whiteboard}
-            title={title}
-            icon={icon}
-            util={util}
-            onClose={onClose}
-            onDragStart={() => setIsDraggable(true)}
-            onDragEnd={() => setIsDraggable(false)}
+        <ModalContext.Provider value={saveFile}>
+          <ModalLayout
+            ref={ref}
+            draggable={isDraggable}
+            onDragStart={handleDragStart}
+            onDragEnd={handleDragEnd}
+            onDrag={handleDrag}
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              top: `${position.y}px`,
+              left: `${position.x}px`,
+            }}
           >
-            {children}
-          </Whiteboard>
-        </ModalLayout>
+            <Whiteboard
+              whiteboard={whiteboard}
+              title={title}
+              icon={icon}
+              util={util}
+              onClose={onClose}
+              onDragStart={() => setIsDraggable(true)}
+              onDragEnd={() => setIsDraggable(false)}
+            >
+              {children}
+            </Whiteboard>
+          </ModalLayout>
+        </ModalContext.Provider>
       )}
     </Portal>
   );

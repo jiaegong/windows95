@@ -1,22 +1,28 @@
 'use client';
 
 import styled from '@emotion/styled';
-import React from 'react';
-
-const options = [
-  {
-    name: 'File',
-  },
-  {
-    name: 'Edit',
-  },
-];
+import React, { useContext } from 'react';
+import { ModalContext } from './modal/Modal';
 
 function Optionbar() {
+  const saveFile = useContext(ModalContext);
+
+  const options = [
+    {
+      name: 'File',
+      function: saveFile,
+    },
+    {
+      name: 'Edit',
+    },
+  ];
+
   return (
     <OptionbarLayout>
-      {options.map((item, idx) => (
-        <Option key={idx}>{item.name}</Option>
+      {options.map((option, idx) => (
+        <Option key={idx} onClick={option.function}>
+          {option.name}
+        </Option>
       ))}
     </OptionbarLayout>
   );

@@ -1,6 +1,5 @@
 import { IconProps } from '@/types/common';
 import React, { cloneElement } from 'react';
-import { Status } from '../Tile';
 import Bomb from './Bomb';
 import {
   NumberOne,
@@ -12,6 +11,7 @@ import {
   NumberSeven,
   NumberEight,
 } from './numbers';
+import { Status } from '../../organisms/Minesweeper';
 
 const numberTiles: { [key: number]: React.ReactElement } = {
   1: <NumberOne />,

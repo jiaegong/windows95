@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Modal from '../molecules/modal/Modal';
 import Bomb from '../atoms/icons/Bomb';
 import Tile from '../atoms/Tile';
@@ -8,9 +8,30 @@ import { theme } from '@/styles/theme';
 const BOARD_SIZE = 10;
 const NUMBER_OF_MINES = 10;
 
+export enum Status {
+  HIDDEN = 'hidden',
+  MINE = 'mine',
+  NUMBER = 'number',
+  MARKED = 'marked',
+}
+
+export type TileData = {
+  x: number;
+  y: number;
+  mine: boolean;
+  status: Status;
+  number?: number;
+};
+
 function Minesweeper() {
+  const [board, setBoard] = useState<TileData[][]>([]);
+
+  useEffect(() => {
+    createBoard(BOARD_SIZE, NUMBER_OF_MINES);
+  }, []);
+
   const createBoard = (boardSize: number, numberOfMines: number) => {
-    const board = [];
+    const newBoard = [];
     const minePositions = getMinePositions(boardSize, numberOfMines);
 
     for (let x = 0; x < boardSize; x++) {
@@ -20,12 +41,14 @@ function Minesweeper() {
           x,
           y,
           mine: minePositions.some(positionMatch.bind(null, { x, y })),
+          status: Status.HIDDEN,
         };
         row.push(tile);
       }
-      board.push(row);
+      newBoard.push(row);
     }
-    return board;
+
+    setBoard(newBoard);
   };
 
   const getMinePositions = (boardSize: number, numberOfMines: number) => {
@@ -52,7 +75,63 @@ function Minesweeper() {
     return a.x === b.x && a.y === b.y;
   };
 
-  const board = createBoard(BOARD_SIZE, NUMBER_OF_MINES);
+  const openTile = ({ x, y }: TileData) => {
+    const updatedTiles = board.map((row) =>
+      row.map((tile) => {
+        if (tile.x === x && tile.y === y) {
+          if (tile.status !== Status.HIDDEN) return tile;
+
+          const updatedTile = { ...tile };
+
+          if (tile.mine) {
+            updatedTile.status = Status.MINE;
+            return updatedTile;
+          }
+
+          updatedTile.status = Status.NUMBER;
+
+          const adjacentTiles = nearbyTiles(tile);
+          const mines = adjacentTiles.filter((m) => m.mine);
+
+          if (mines.length === 0) {
+            // maximum call stack size exceeded..😭
+            // adjacentTiles.forEach((adjTile) => {
+            //   openTile(adjTile);
+            // });
+          } else {
+            updatedTile.number = mines.length;
+          }
+
+          return updatedTile;
+        } else {
+          return tile;
+        }
+      })
+    );
+    setBoard(updatedTiles);
+  };
+
+  const markedTile = (tile: TileData) => {
+    if (tile.status === Status.HIDDEN) {
+      tile.status = Status.MARKED;
+    }
+    if (tile.status === Status.MARKED) {
+      tile.status = Status.HIDDEN;
+    }
+  };
+
+  const nearbyTiles = ({ x, y }: { x: number; y: number }) => {
+    const tiles = [];
+
+    for (let xOffset = -1; xOffset <= 1; xOffset++) {
+      for (let yOffset = -1; yOffset <= 1; yOffset++) {
+        const tile = board[x + xOffset]?.[y + yOffset];
+        if (tile) tiles.push(tile);
+      }
+    }
+
+    return tiles;
+  };
 
   return (
     <Modal
@@ -64,7 +143,15 @@ function Minesweeper() {
       <BoardContainer size={BOARD_SIZE}>
         {board.map((row) => {
           return row.map((cell, idx) => (
-            <Tile key={idx} data={cell} board={board} />
+            <Tile
+              key={idx}
+              data={cell}
+              onClick={() => openTile(cell)}
+              onContextMenu={(e: React.MouseEvent) => {
+                e.preventDefault();
+                markedTile(cell);
+              }}
+            />
           ));
         })}
       </BoardContainer>
