@@ -20,6 +20,7 @@ export type TileData = {
   y: number;
   mine: boolean;
   status: Status;
+  open: boolean;
   number?: number;
 };
 
@@ -42,6 +43,7 @@ function Minesweeper() {
           y,
           mine: minePositions.some(positionMatch.bind(null, { x, y })),
           status: Status.HIDDEN,
+          open: false,
         };
         row.push(tile);
       }
@@ -75,49 +77,52 @@ function Minesweeper() {
     return a.x === b.x && a.y === b.y;
   };
 
-  const openTile = ({ x, y }: TileData) => {
-    const updatedTiles = board.map((row) =>
-      row.map((tile) => {
-        if (tile.x === x && tile.y === y) {
-          if (tile.status !== Status.HIDDEN) return tile;
+  const openTile = (cell: TileData) => {
+    const currentTile = board[cell.x][cell.y];
+    // If the tile is already open, then return early.
+    if (currentTile.open) return;
 
-          const updatedTile = { ...tile };
+    const updatedBoard = [...board];
+    const updatedTile = updatedBoard[cell.x][cell.y];
 
-          if (tile.mine) {
-            updatedTile.status = Status.MINE;
-            return updatedTile;
-          }
+    updatedTile.open = true;
 
-          updatedTile.status = Status.NUMBER;
+    if (updatedTile.mine) {
+      updatedTile.status = Status.MINE;
+    } else {
+      updatedTile.status = Status.NUMBER;
+    }
 
-          const adjacentTiles = nearbyTiles(tile);
-          const mines = adjacentTiles.filter((m) => m.mine);
+    const adjacentTiles = nearbyTiles(updatedTile);
+    const mines = adjacentTiles.filter((m) => m.mine);
 
-          if (mines.length === 0) {
-            // maximum call stack size exceeded..😭
-            // adjacentTiles.forEach((adjTile) => {
-            //   openTile(adjTile);
-            // });
-          } else {
-            updatedTile.number = mines.length;
-          }
+    // If there's no mines nearby, then open all the other nearby tiles with no mines nearby.
+    if (mines.length === 0) {
+      adjacentTiles.forEach((adjTile) => {
+        console.log(adjTile);
+        if (adjTile.open) return;
+        openTile(adjTile);
+      });
+    } else {
+      updatedTile.number = mines.length;
+    }
 
-          return updatedTile;
-        } else {
-          return tile;
-        }
-      })
-    );
-    setBoard(updatedTiles);
+    updatedBoard[updatedTile.x][updatedTile.y] = updatedTile;
+
+    setBoard(updatedBoard);
   };
 
   const markedTile = (tile: TileData) => {
+    const updatedBoard = [...board];
+    const updatedTile = { ...tile };
     if (tile.status === Status.HIDDEN) {
-      tile.status = Status.MARKED;
+      updatedTile.status = Status.MARKED;
     }
     if (tile.status === Status.MARKED) {
-      tile.status = Status.HIDDEN;
+      updatedTile.status = Status.HIDDEN;
     }
+    updatedBoard[tile.x][tile.y] = updatedTile;
+    setBoard(updatedBoard);
   };
 
   const nearbyTiles = ({ x, y }: { x: number; y: number }) => {
