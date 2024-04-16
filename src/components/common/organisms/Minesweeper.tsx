@@ -4,9 +4,17 @@ import Bomb from '../atoms/icons/Bomb';
 import Tile from '../atoms/Tile';
 import styled from '@emotion/styled';
 import { theme } from '@/styles/theme';
+import useModalStore from '@/store/useModalStore';
+import Gameboard from '../molecules/Gameboard';
 
 const BOARD_SIZE = 10;
 const NUMBER_OF_MINES = 10;
+
+export enum GameResult {
+  WIN = 'win',
+  LOSE = 'lose',
+  STANDARD = 'standard',
+}
 
 export enum Status {
   HIDDEN = 'hidden',
@@ -25,11 +33,55 @@ export type TileData = {
 };
 
 function Minesweeper() {
+  const { getModalState } = useModalStore();
+  const modalOpen = getModalState('minesweeper')?.open;
   const [board, setBoard] = useState<TileData[][]>([]);
+  const [gameEnd, setGameEnd] = useState(false);
+  const [gameResult, setGameResult] = useState<GameResult>(GameResult.STANDARD);
 
   useEffect(() => {
     createBoard(BOARD_SIZE, NUMBER_OF_MINES);
-  }, []);
+  }, [modalOpen]);
+
+  useEffect(() => {
+    const win =
+      board.some((row) => row.some((tile) => tile.open)) &&
+      board.every((row) => {
+        return row.every((tile) => {
+          return (
+            tile.open ||
+            (tile.mine &&
+              (tile.status === Status.HIDDEN || tile.status === Status.MARKED))
+          );
+        });
+      });
+
+    const lose = board.some((row) => {
+      return row.some((tile) => {
+        return tile.status === Status.MINE;
+      });
+    });
+
+    if (win) {
+      setGameEnd(true);
+      setGameResult(GameResult.WIN);
+    }
+
+    if (lose) {
+      board.forEach((row) =>
+        row.forEach((tile) => {
+          if (tile.mine) openTile(tile);
+        })
+      );
+      setGameEnd(true);
+      setGameResult(GameResult.LOSE);
+    }
+
+    return () => {
+      setGameEnd(false);
+      setGameResult(GameResult.STANDARD);
+    };
+  }, [board]);
 
   const createBoard = (boardSize: number, numberOfMines: number) => {
     const newBoard = [];
@@ -145,16 +197,21 @@ function Minesweeper() {
       icon={<Bomb size={16} />}
       whiteboard={false}
     >
+      <Gameboard result={gameResult} />
       <BoardContainer size={BOARD_SIZE}>
         {board.map((row) => {
           return row.map((cell, idx) => (
             <Tile
               key={idx}
               data={cell}
-              onClick={() => openTile(cell)}
+              onClick={() => {
+                if (!gameEnd) openTile(cell);
+              }}
               onContextMenu={(e: React.MouseEvent) => {
-                e.preventDefault();
-                markedTile(cell);
+                if (!gameEnd) {
+                  e.preventDefault();
+                  markedTile(cell);
+                }
               }}
             />
           ));
