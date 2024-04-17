@@ -10,7 +10,7 @@ import {
   NumberSix,
   NumberSeven,
   NumberEight,
-} from './numbers';
+} from './tilenumbers';
 import { Status } from '../../organisms/Minesweeper';
 
 const numberTiles: { [key: number]: React.ReactElement } = {

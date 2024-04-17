@@ -5,7 +5,7 @@ import Tile from '../atoms/Tile';
 import styled from '@emotion/styled';
 import { theme } from '@/styles/theme';
 import useModalStore from '@/store/useModalStore';
-import Gameboard from '../molecules/Gameboard';
+import GameControls from '../molecules/GameControls';
 
 const BOARD_SIZE = 10;
 const NUMBER_OF_MINES = 10;
@@ -197,35 +197,55 @@ function Minesweeper() {
       icon={<Bomb size={16} />}
       whiteboard={false}
     >
-      <Gameboard result={gameResult} />
-      <BoardContainer size={BOARD_SIZE}>
-        {board.map((row) => {
-          return row.map((cell, idx) => (
-            <Tile
-              key={idx}
-              data={cell}
-              onClick={() => {
-                if (!gameEnd) openTile(cell);
-              }}
-              onContextMenu={(e: React.MouseEvent) => {
-                if (!gameEnd) {
-                  e.preventDefault();
-                  markedTile(cell);
-                }
-              }}
-            />
-          ));
-        })}
-      </BoardContainer>
+      <GameContainer>
+        <GameControlsWrapper>
+          <GameControls
+            result={gameResult}
+            handleReset={() => createBoard(BOARD_SIZE, NUMBER_OF_MINES)}
+          />
+        </GameControlsWrapper>
+        <BoardContainer size={BOARD_SIZE}>
+          {board.map((row) => {
+            return row.map((cell, idx) => (
+              <Tile
+                key={idx}
+                data={cell}
+                onClick={() => {
+                  if (!gameEnd) openTile(cell);
+                }}
+                onContextMenu={(e: React.MouseEvent) => {
+                  if (!gameEnd) {
+                    e.preventDefault();
+                    markedTile(cell);
+                  }
+                }}
+              />
+            ));
+          })}
+        </BoardContainer>
+      </GameContainer>
     </Modal>
   );
 }
 
 export default Minesweeper;
 
+const GameContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  box-shadow: 2px 2px 0px 0px #dfdfdf inset, -2px -2px 0px 0px #7f7f7f inset,
+    1px 1px 0px 0px #ffffff inset, -1px -1px 0px 0px #000000 inset;
+  padding: 4px;
+`;
+
 const BoardContainer = styled.div<{ size: number }>`
   display: grid;
   grid-template-columns: ${({ size }) => `repeat(${size}, 1fr)`};
   background: ${theme.colors.gray01};
   padding: 8px;
+  box-sizing: border-box;
+`;
+
+const GameControlsWrapper = styled.div`
+  padding: 12px;
 `;
