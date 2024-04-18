@@ -6,6 +6,7 @@ import styled from '@emotion/styled';
 import { theme } from '@/styles/theme';
 import useModalStore from '@/store/useModalStore';
 import GameControls from '../molecules/GameControls';
+import useTimerStore from '@/store/useTimerStore';
 
 const BOARD_SIZE = 10;
 const NUMBER_OF_MINES = 10;
@@ -38,10 +39,21 @@ function Minesweeper() {
   const [board, setBoard] = useState<TileData[][]>([]);
   const [gameEnd, setGameEnd] = useState(false);
   const [gameResult, setGameResult] = useState<GameResult>(GameResult.STANDARD);
+  const [isRunning, setIsRunning] = useState(false);
+  const { resetSeconds } = useTimerStore();
 
   useEffect(() => {
-    createBoard(BOARD_SIZE, NUMBER_OF_MINES);
+    if (modalOpen) {
+      createBoard(BOARD_SIZE, NUMBER_OF_MINES);
+    }
   }, [modalOpen]);
+
+  useEffect(() => {
+    if (!isRunning) {
+      const startGame = board.some((row) => row.some((tile) => tile.open));
+      if (startGame) setIsRunning(true);
+    }
+  }, [board]);
 
   useEffect(() => {
     const win =
@@ -63,6 +75,7 @@ function Minesweeper() {
     });
 
     if (win) {
+      setIsRunning(false);
       setGameEnd(true);
       setGameResult(GameResult.WIN);
     }
@@ -73,13 +86,18 @@ function Minesweeper() {
           if (tile.mine) openTile(tile);
         })
       );
+      setIsRunning(false);
       setGameEnd(true);
       setGameResult(GameResult.LOSE);
     }
 
     return () => {
-      setGameEnd(false);
-      setGameResult(GameResult.STANDARD);
+      if (gameEnd) {
+        setIsRunning(false);
+        resetSeconds();
+        setGameEnd(false);
+        setGameResult(GameResult.STANDARD);
+      }
     };
   }, [board]);
 
@@ -151,7 +169,6 @@ function Minesweeper() {
     // If there's no mines nearby, then open all the other nearby tiles with no mines nearby.
     if (mines.length === 0) {
       adjacentTiles.forEach((adjTile) => {
-        console.log(adjTile);
         if (adjTile.open) return;
         openTile(adjTile);
       });
@@ -190,6 +207,12 @@ function Minesweeper() {
     return tiles;
   };
 
+  const resetGame = () => {
+    setIsRunning(false);
+    resetSeconds();
+    createBoard(BOARD_SIZE, NUMBER_OF_MINES);
+  };
+
   return (
     <Modal
       id='minesweeper'
@@ -201,7 +224,8 @@ function Minesweeper() {
         <GameControlsWrapper>
           <GameControls
             result={gameResult}
-            handleReset={() => createBoard(BOARD_SIZE, NUMBER_OF_MINES)}
+            handleReset={resetGame}
+            isRunning={isRunning}
           />
         </GameControlsWrapper>
         <BoardContainer size={BOARD_SIZE}>

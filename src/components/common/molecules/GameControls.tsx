@@ -5,31 +5,8 @@ import Win from '../atoms/icons/smileyfaces/Win';
 import Lose from '../atoms/icons/smileyfaces/Lose';
 import styled from '@emotion/styled';
 import { theme } from '@/styles/theme';
-import {
-  Zero,
-  One,
-  Two,
-  Three,
-  Four,
-  Five,
-  Six,
-  Seven,
-  Eight,
-  Nine,
-} from '../atoms/icons/boardnumbers';
-
-const boardNumber: { [key: string]: React.ReactElement } = {
-  0: <Zero />,
-  1: <One />,
-  2: <Two />,
-  3: <Three />,
-  4: <Four />,
-  5: <Five />,
-  6: <Six />,
-  7: <Seven />,
-  8: <Eight />,
-  9: <Nine />,
-};
+import Timer from './Timer';
+import Billboard from '../atoms/Billboard';
 
 const smileyFace: { [key in GameResult]: React.ReactNode } = {
   win: <Win />,
@@ -40,22 +17,23 @@ const smileyFace: { [key in GameResult]: React.ReactNode } = {
 function GameControls({
   result,
   handleReset,
+  isRunning,
 }: {
   result: GameResult;
   handleReset: () => void;
+  isRunning: boolean;
 }) {
-  const renderNumber = (number: number) => {
-    const numberString = number.toString().padStart(3, '0');
-    return numberString
-      .split('')
-      .map((digit, index) => <span key={index}>{boardNumber[digit]}</span>);
-  };
-
   return (
     <Layout>
-      <Billboard>{renderNumber(10)}</Billboard>
-      <GameButton onClick={handleReset}>{smileyFace[result]}</GameButton>
-      <Billboard>{renderNumber(100)}</Billboard>
+      <Billboard number={10} />
+      <GameButton
+        onClick={() => {
+          handleReset();
+        }}
+      >
+        {smileyFace[result]}
+      </GameButton>
+      <Timer isRunning={isRunning} />
     </Layout>
   );
 }
@@ -86,12 +64,4 @@ const GameButton = styled.button`
   justify-content: center;
   align-items: center;
   padding: 0;
-`;
-
-const Billboard = styled.div`
-  width: fit-content;
-  height: 26px;
-  background: ${theme.colors.black};
-  display: flex;
-  gap: 2px;
 `;

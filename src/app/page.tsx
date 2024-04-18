@@ -15,8 +15,6 @@ import styled from '@emotion/styled';
 export default function Home() {
   const { setModal, getAllModals } = useModalStore();
 
-  console.log(getAllModals());
-
   return (
     <main>
       <ProgramSection>
