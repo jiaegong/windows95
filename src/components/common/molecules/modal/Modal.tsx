@@ -79,37 +79,41 @@ function Modal({
     setInitialPosition({ ...position });
   };
 
+  if (!isOpen) return null;
+
   return (
-    <Portal>
+    <>
       {isOpen && (
-        <ModalContext.Provider value={saveFile}>
-          <ModalLayout
-            ref={ref}
-            draggable={isDraggable}
-            onDragStart={handleDragStart}
-            onDragEnd={handleDragEnd}
-            onDrag={handleDrag}
-            onClick={(e) => e.stopPropagation()}
-            style={{
-              top: `${position.y}px`,
-              left: `${position.x}px`,
-            }}
-          >
-            <Whiteboard
-              whiteboard={whiteboard}
-              title={title}
-              icon={icon}
-              util={util}
-              onClose={onClose}
-              onDragStart={() => setIsDraggable(true)}
-              onDragEnd={() => setIsDraggable(false)}
+        <Portal>
+          <ModalContext.Provider value={saveFile}>
+            <ModalLayout
+              ref={ref}
+              draggable={isDraggable}
+              onDragStart={handleDragStart}
+              onDragEnd={handleDragEnd}
+              onDrag={handleDrag}
+              onClick={(e) => e.stopPropagation()}
+              style={{
+                top: `${position.y}px`,
+                left: `${position.x}px`,
+              }}
             >
-              {children}
-            </Whiteboard>
-          </ModalLayout>
-        </ModalContext.Provider>
+              <Whiteboard
+                whiteboard={whiteboard}
+                title={title}
+                icon={icon}
+                util={util}
+                onClose={onClose}
+                onDragStart={() => setIsDraggable(true)}
+                onDragEnd={() => setIsDraggable(false)}
+              >
+                {children}
+              </Whiteboard>
+            </ModalLayout>
+          </ModalContext.Provider>
+        </Portal>
       )}
-    </Portal>
+    </>
   );
 }
 
