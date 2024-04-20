@@ -1,13 +1,12 @@
 'use client';
 
-import React, { createContext, useEffect, useRef, useState } from 'react';
+import React, { createContext, useRef, useState } from 'react';
 import Portal from './Portal';
 import styled from '@emotion/styled';
 import useModalStore from '@/store/useModalStore';
 import Whiteboard from '../Whiteboard';
 import Folder from '../../atoms/icons/Folder';
 import { theme } from '@/styles/theme';
-import Titlebar from '../Titlebar';
 
 type Position = {
   x: number;

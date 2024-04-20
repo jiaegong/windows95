@@ -12,31 +12,16 @@ type IconWithLabelProps = {
 };
 
 function IconWithLabel({ icon, label, onClick }: IconWithLabelProps) {
-  const [clickCount, setClickCount] = useState(0);
   const [clicked, setClicked] = useState(false);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (clickCount === 1) {
-        setClicked(!clicked);
-        setClickCount(0);
-      }
-    }, 300);
-
-    if (clickCount === 2) {
-      onClick();
-      setClickCount(0);
-    }
-
-    return () => clearTimeout(timer);
-  }, [clickCount, clicked]);
-
-  const handleClick = () => {
-    setClickCount((prev) => prev + 1);
-  };
-
   return (
-    <Wrapper className={w95fa.className} onClick={handleClick}>
+    <Wrapper
+      className={w95fa.className}
+      onDoubleClick={onClick}
+      onDoubleClickCapture={() => setClicked(true)}
+      onBlur={() => setClicked(false)}
+      tabIndex={0}
+    >
       {icon}
       <LabelWrapper clicked={clicked}>{label}</LabelWrapper>
     </Wrapper>
