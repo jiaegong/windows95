@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import Billboard from '../atoms/Billboard';
+import Billboard from './Billboard';
 import useTimerStore from '@/store/useTimerStore';
 
 function Timer({ isRunning }: { isRunning: boolean }) {

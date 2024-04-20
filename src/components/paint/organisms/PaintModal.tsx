@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import Modal from '../molecules/modal/Modal';
-import Paint from '../atoms/icons/Paint';
-import Canvas from '../molecules/Canvas';
-import Palette from '../molecules/Palette';
+import Modal from '../../common/molecules/modal/Modal';
+import Paint from '../../common/atoms/icons/Paint';
+import Canvas from '../../common/molecules/Canvas';
+import Palette from '../../common/molecules/Palette';
 
 function PaintModal() {
   const [color, setColor] = useState<string>('#000000');

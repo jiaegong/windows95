@@ -2,7 +2,7 @@
 
 import { theme } from '@/styles/theme';
 import styled from '@emotion/styled';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { w95fa } from '../../../../public/font/font';
 
 type IconWithLabelProps = {

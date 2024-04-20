@@ -5,7 +5,7 @@ import Win from '../atoms/icons/smileyfaces/Win';
 import Lose from '../atoms/icons/smileyfaces/Lose';
 import styled from '@emotion/styled';
 import { theme } from '@/styles/theme';
-import Timer from './Timer';
+import Timer from '../atoms/Timer';
 import Billboard from '../atoms/Billboard';
 
 const smileyFace: { [key in GameResult]: React.ReactNode } = {

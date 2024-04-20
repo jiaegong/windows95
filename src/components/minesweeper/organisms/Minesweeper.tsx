@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Modal from '../molecules/modal/Modal';
+import Modal from '../../common/molecules/modal/Modal';
 import Bomb from '../atoms/icons/Bomb';
 import Tile from '../atoms/Tile';
 import styled from '@emotion/styled';

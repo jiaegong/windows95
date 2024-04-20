@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import Modal from '../molecules/modal/Modal';
-import Notepad from '../atoms/icons/Notepad';
+import Modal from '../../common/molecules/modal/Modal';
+import Notepad from '../../common/atoms/icons/Notepad';
 import styled from '@emotion/styled';
 
 function NotepadModal() {
