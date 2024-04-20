@@ -23,7 +23,9 @@ function IconWithLabel({ icon, label, onClick }: IconWithLabelProps) {
       tabIndex={0}
     >
       {icon}
-      <LabelWrapper clicked={clicked}>{label}</LabelWrapper>
+      <LabelWrapper clicked={clicked}>
+        <Label clicked={clicked}>{label}</Label>
+      </LabelWrapper>
     </Wrapper>
   );
 }
@@ -41,9 +43,12 @@ const Wrapper = styled.div`
 `;
 
 const LabelWrapper = styled.div<{ clicked: boolean }>`
-  width: fit-content;
+  text-align: center;
+  user-select: none;
+`;
+
+const Label = styled.span<{ clicked: boolean }>`
   color: ${theme.colors.white};
   background: ${({ clicked }) => clicked && `${theme.colors.secondary}`};
   outline: ${({ clicked }) => clicked && `1px dotted ${theme.colors.black}`};
-  text-align: center;
 `;

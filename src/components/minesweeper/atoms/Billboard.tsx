@@ -14,7 +14,7 @@ import {
   Seven,
   Eight,
   Nine,
-} from '../../common/atoms/icons/boardnumbers';
+} from './icons/boardnumbers';
 
 const boardNumber: { [key: string]: React.ReactElement } = {
   0: <Zero />,
